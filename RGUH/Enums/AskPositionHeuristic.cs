@@ -2,10 +2,7 @@
 {
     public enum AskPositionHeuristic
     {
-        First,
-        Last,
-        Random,
-        Optimal,
-        MonteCarlo
+        MEQO,
+        ESB
     }
 }

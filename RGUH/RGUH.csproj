@@ -163,8 +163,11 @@
     <Compile Include="BrowserProblem.aspx.designer.cs">
       <DependentUpon>BrowserProblem.aspx</DependentUpon>
     </Compile>
-    <Compile Include="GameFlow\MonteCarlo.cs" />
-    <Compile Include="GameFlow\Optimal.cs" />
+    <Compile Include="GameFlow\EsbUncertain.cs" />
+    <Compile Include="GameFlow\MeqoUncertain.cs" />
+    <Compile Include="GameFlow\TurnsHandler.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="InstructionsPage.aspx.cs">
       <DependentUpon>InstructionsPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -252,10 +255,7 @@
     <Compile Include="GameFlow\Initialization.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Logic\Position.cs" />
-    <Compile Include="GameFlow\PositionHandler.cs">
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
+    <Compile Include="Logic\ScenarioTurn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GameFlow\RatingHandler.cs">
       <SubType>ASPXCodeBehind</SubType>

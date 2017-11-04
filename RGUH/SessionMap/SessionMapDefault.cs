@@ -35,10 +35,10 @@ namespace RGUH
             set { Session[SessionMap.NumOfWrongQuizAnswersStr] = value; }
         }
 
-        public Position[] Positions
+        public ScenarioTurn[] ScenarioTurns
         {
-            get { return (Position[])Session[SessionMap.PositionsStr]; }
-            set { Session[SessionMap.PositionsStr] = value; }
+            get { return (ScenarioTurn[])Session[SessionMap.ScenarioTurnsStr]; }
+            set { Session[SessionMap.ScenarioTurnsStr] = value; }
         }
 
         public int[] AcceptedCandidates

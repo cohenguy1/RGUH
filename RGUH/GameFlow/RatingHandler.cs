@@ -18,47 +18,33 @@ namespace RGUH
                 return false;
             }
 
-            if (CurrentPositionNumber == Common.NumOfPositions)
+            if (CurrentTurnNumber == Common.NumOfTurns)
             {
                 return true;
             }
 
-            if (AskPosition == AskPositionHeuristic.First)
+            if (AskPosition == AskPositionHeuristic.MEQO)
             {
-                return (CurrentPositionNumber == 1);
-            }
-
-            if (AskPosition == AskPositionHeuristic.Last)
-            {
-                return (CurrentPositionNumber == Common.NumOfPositions);
-            }
-
-            if (AskPosition == AskPositionHeuristic.Random)
-            {
-                return (CurrentPositionNumber == RandomHuristicAskPosition);
-            }
-
-            if (AskPosition == AskPositionHeuristic.Optimal)
-            {
-                return Optimal.ShouldAsk(CurrentPositionNumber - 1, CurrentCandidate.CandidateRank);
+                return MeqoUncertain.ShouldAsk(CurrentCandidate.CandidateRank);
             }
             
-            if (AskPosition == AskPositionHeuristic.MonteCarlo)
+            if (AskPosition == AskPositionHeuristic.ESB)
             {
-                int[] accepted = new int[10];
+                int[] accepted = new int[Common.NumOfTurns];
 
-                for (var index = 0; index < CurrentPositionNumber; index++)
+                for (var index = 0; index < CurrentTurnNumber; index++)
                 {
-                    if (Positions[index].ChosenCandidate != null)
+                    if (ScenarioTurns[index].Played)
                     {
-                        accepted[index] = Positions[index].ChosenCandidate.CandidateRank;
-                    } else
+                        accepted[index] = ScenarioTurns[index].ChosenCandidate.CandidateRank;
+                    }
+                    else
                     {
                         Alert.Show("Problem occured");
                     }
                 }
 
-                return MonteCarlo.ShouldAsk(accepted, CurrentPositionNumber - 1);
+                return EsbUncertain.ShouldAsk(accepted, CurrentTurnNumber - 1);
             }
 
             return false;
@@ -93,19 +79,10 @@ namespace RGUH
 
             SaveRatingToDB(agentRating);
 
-            MultiView2.ActiveViewIndex = 0;
-
-            dbHandler.UpdateTimesTable(GameState.AfterRate);
-
             AskForRating = false;
             AlreadyAskedForRating = true;
 
-            TimerGame.Enabled = true;
-
-            if (CurrentPositionNumber > Common.NumOfPositions)
-            {
-                Response.Redirect("EndGame.aspx");
-            }
+            Response.Redirect("EndGame.aspx");
         }
 
         private void SaveRatingToDB(int adviserRating)
@@ -119,7 +96,7 @@ namespace RGUH
                 StringBuilder command = new StringBuilder();
                 command.Append("INSERT INTO UserRatings (UserId, AdviserRating, ");
 
-                for (int i = 1; i <= Common.NumOfPositions; i++)
+                for (int i = 1; i <= Common.NumOfTurns; i++)
                 {
                     command.Append("Position" + i + "Rank, ");
                 }
@@ -127,7 +104,7 @@ namespace RGUH
                 command.Append("RatingPosition, AskPosition, VectorNum, Reason) ");
                 command.Append("VALUES (@UserId, @AdviserRating,");
 
-                for (int i = 1; i <= Common.NumOfPositions; i++)
+                for (int i = 1; i <= Common.NumOfTurns; i++)
                 {
                     command.Append("@Position" + i + "Rank, ");
                 }
@@ -141,12 +118,12 @@ namespace RGUH
                     cmd.Parameters.AddWithValue("@UserId", UserId);
                     cmd.Parameters.AddWithValue("@AdviserRating", adviserRating.ToString());
 
-                    for (int i = 1; i <= Common.NumOfPositions; i++)
+                    for (int i = 1; i <= Common.NumOfTurns; i++)
                     {
                         cmd.Parameters.AddWithValue("@Position" + i + "Rank", GetChosenCandidateRankToInsertToDb(i));
                     }
 
-                    cmd.Parameters.AddWithValue("@RatingPosition", CurrentPositionNumber - 1);
+                    cmd.Parameters.AddWithValue("@RatingPosition", CurrentTurnNumber - 1);
                     cmd.Parameters.AddWithValue("@AskPosition", AskPosition.ToString());
                     cmd.Parameters.AddWithValue("@VectorNum", VectorNum);
                     cmd.Parameters.AddWithValue("@Reason", reasonTxtBox.Text);
@@ -155,16 +132,16 @@ namespace RGUH
             }
         }
 
-        private string GetChosenCandidateRankToInsertToDb(int positionIndex)
+        private string GetChosenCandidateRankToInsertToDb(int turnIndex)
         {
-            var position = Positions[positionIndex - 1];
+            var turn = ScenarioTurns[turnIndex - 1];
 
-            if (position.ChosenCandidate == null)
+            if (!turn.Played)
             {
                 return string.Empty;
             }
 
-            return position.ChosenCandidate.CandidateRank.ToString();
+            return turn.ChosenCandidate.CandidateRank.ToString();
         }
     }
 }

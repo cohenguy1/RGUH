@@ -33,9 +33,9 @@
                     <asp:Label ID="MovingJobTitleLabel" runat="server" Style="margin-top: 20px;" Font-Bold="true" Font-Size="X-Large" Visible="false" ForeColor="Green"></asp:Label>
                     <br />
                     <asp:Image ID="ImageHired" runat="server" Height="147px" Width="184px" ImageUrl="~/Images/Hired.jpg" Visible="False" />
-                    <asp:Label ID="PositionSummaryLbl1" runat="server" Font-Size="Large" Visible="false" Text="<br />The worker you hired has an absolute rank of&nbsp;"></asp:Label>
-                    <asp:Label ID="PositionSummaryLbl2" runat="server" Font-Size="X-Large" Visible="false" ForeColor="Green" Font-Bold="true"></asp:Label>
-                    <asp:Label ID="PositionSummaryLbl3" runat="server" Font-Size="Large" Visible="false" Text="."></asp:Label>
+                    <asp:Label ID="TurnSummaryLbl1" runat="server" Font-Size="Large" Visible="false" Text="<br />The worker you hired has an absolute rank of&nbsp;"></asp:Label>
+                    <asp:Label ID="TurnSummaryLbl2" runat="server" Font-Size="X-Large" Visible="false" ForeColor="Green" Font-Bold="true"></asp:Label>
+                    <asp:Label ID="TurnSummaryLbl3" runat="server" Font-Size="Large" Visible="false" Text="."></asp:Label>
                     <asp:Label ID="PrizePointsLbl1" runat="server" Font-Size="Large" Visible="false" Text="<br /><br />Prize points received:&nbsp;"></asp:Label>
                     <asp:Label ID="PrizePointsLbl2" runat="server" Font-Size="X-Large" Visible="false" ForeColor="Green" Font-Bold="true"></asp:Label>
                     <asp:Label ID="PrizePointsLbl3" runat="server" Font-Size="Large" Visible="false" Text="."></asp:Label>
@@ -204,7 +204,7 @@
                 <asp:TableCell ID="Waiter10PrizeCell" HorizontalAlign="Center" Text=""></asp:TableCell>
             </asp:TableRow>
             <asp:TableRow Height="35px">
-                <asp:TableCell ID="TotalPrizePointsCell" ColumnSpan="3" Font-Size="Large" Font-Bold="true" ForeColor="Purple" HorizontalAlign="Left" Text="&nbsp;Total Prize Points:"></asp:TableCell>
+                <asp:TableCell ID="AveragePrizePointsCell" ColumnSpan="3" Font-Size="Large" Font-Bold="true" ForeColor="Purple" HorizontalAlign="Left" Text="&nbsp;Average Prize Points:"></asp:TableCell>
             </asp:TableRow>
 
         </asp:Table>

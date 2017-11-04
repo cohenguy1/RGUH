@@ -51,21 +51,21 @@ namespace RGUH
 
                     DecideRandomStuff();                    
 
-                    GeneratePositions();
+                    GenerateTurns();
                 }
             }
         }
 
-        private void GeneratePositions()
+        private void GenerateTurns()
         {
-            Positions = new Position[Common.NumOfPositions];
+            ScenarioTurns = new ScenarioTurn[Common.NumOfTurns];
 
-            for (int positionIndex = 0; positionIndex < Common.NumOfPositions; positionIndex++)
+            for (int positionIndex = 0; positionIndex < Common.NumOfTurns; positionIndex++)
             {
-                Positions[positionIndex] = new Position(positionIndex + 1);
+                ScenarioTurns[positionIndex] = new ScenarioTurn(positionIndex + 1);
             }
 
-            AcceptedCandidates = new int[Common.NumOfPositions];
+            AcceptedCandidates = new int[Common.NumOfTurns];
         }
 
         private void DecideRandomStuff()

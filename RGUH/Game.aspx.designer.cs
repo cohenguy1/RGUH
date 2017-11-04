@@ -148,31 +148,31 @@ namespace RGUH {
         protected global::System.Web.UI.WebControls.Image ImageHired;
         
         /// <summary>
-        /// PositionSummaryLbl1 control.
+        /// TurnSummaryLbl1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label PositionSummaryLbl1;
+        protected global::System.Web.UI.WebControls.Label TurnSummaryLbl1;
         
         /// <summary>
-        /// PositionSummaryLbl2 control.
+        /// TurnSummaryLbl2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label PositionSummaryLbl2;
+        protected global::System.Web.UI.WebControls.Label TurnSummaryLbl2;
         
         /// <summary>
-        /// PositionSummaryLbl3 control.
+        /// TurnSummaryLbl3 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label PositionSummaryLbl3;
+        protected global::System.Web.UI.WebControls.Label TurnSummaryLbl3;
         
         /// <summary>
         /// PrizePointsLbl1 control.
@@ -661,12 +661,12 @@ namespace RGUH {
         protected global::System.Web.UI.WebControls.TableCell Waiter10PrizeCell;
         
         /// <summary>
-        /// TotalPrizePointsCell control.
+        /// AveragePrizePointsCell control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TableCell TotalPrizePointsCell;
+        protected global::System.Web.UI.WebControls.TableCell AveragePrizePointsCell;
     }
 }

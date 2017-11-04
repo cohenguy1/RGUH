@@ -41,16 +41,16 @@ namespace RGUH
             set { Session[SessionMap.AskForRatingStr] = value; }
         }
 
-        public int CurrentPositionNumber
+        public int CurrentTurnNumber
         {
-            get { return (int)Session[SessionMap.CurrentPositionNumberStr]; }
-            set { Session[SessionMap.CurrentPositionNumberStr] = value; }
+            get { return (int)Session[SessionMap.CurrentTurnNumberStr]; }
+            set { Session[SessionMap.CurrentTurnNumberStr] = value; }
         }
 
-        public Position[] Positions
+        public ScenarioTurn[] ScenarioTurns
         {
-            get { return (Position[])Session[SessionMap.PositionsStr]; }
-            set { Session[SessionMap.PositionsStr] = value; }
+            get { return (ScenarioTurn[])Session[SessionMap.ScenarioTurnsStr]; }
+            set { Session[SessionMap.ScenarioTurnsStr] = value; }
         }
 
         public int[] AcceptedCandidates
@@ -59,10 +59,10 @@ namespace RGUH
             set { Session[SessionMap.AcceptedCandidatesStr] = value; }
         }
 
-        public PositionStatus CurrentPositionStatus
+        public TurnStatus CurrentTurnStatus
         {
-            get { return (PositionStatus)Session[SessionMap.CurrentPositionStatusStr]; }
-            set { Session[SessionMap.CurrentPositionStatusStr] = value; }
+            get { return (TurnStatus)Session[SessionMap.CurrentTurnStatusStr]; }
+            set { Session[SessionMap.CurrentTurnStatusStr] = value; }
         }
 
         public List<Candidate> PositionCandidates

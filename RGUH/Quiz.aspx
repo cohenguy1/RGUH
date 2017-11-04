@@ -35,12 +35,12 @@
                 </td>
             </tr>
             <tr>
-                <td>Assuming you have managed to accumulate 1000 prize points. What will be your bonus?
+                <td>Assuming you have managed to achieve 100 prize points on average. What will be your bonus?
                         <asp:RadioButtonList ID="rbl3" runat="server">
-                            <asp:ListItem>10 cents</asp:ListItem>
-                            <asp:ListItem>40 cents</asp:ListItem>
+                            <asp:ListItem>4 cents</asp:ListItem>
                             <asp:ListItem>25 cents</asp:ListItem>
-                            <asp:ListItem>20 cents</asp:ListItem>
+                            <asp:ListItem>16 cents</asp:ListItem>
+                            <asp:ListItem>10 cents</asp:ListItem>
                         </asp:RadioButtonList>
                 </td>
             </tr>

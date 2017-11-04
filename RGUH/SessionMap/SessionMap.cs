@@ -5,8 +5,8 @@
         public const string UserIdStr = "user_id";
 
         public const string CurrentCandidateStr = "CurrentCandidate";
-        public const string PositionsStr = "Positions";
-        public const string CurrentPositionNumberStr = "CurrentPositionNumber";
+        public const string ScenarioTurnsStr = "ScenarioTurns";
+        public const string CurrentTurnNumberStr = "CurrentTurnNumber";
 
         public const string PositionCandidiatesStr = "PositionCandidates";
 
@@ -17,7 +17,7 @@
 
         public const string GameModeStr = "GameMode";
 
-        public const string CurrentPositionStatusStr = "CurrentPositionStatus";
+        public const string CurrentTurnStatusStr = "CurrentTurnStatus";
 
         public const string AskPositionStr = "AskPosition";
 

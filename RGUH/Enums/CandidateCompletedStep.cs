@@ -1,6 +1,6 @@
 ﻿namespace RGUH.Enums
 {
-    public enum PositionStatus
+    public enum TurnStatus
     {
         Initial,
         Interviewing,

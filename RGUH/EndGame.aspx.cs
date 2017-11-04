@@ -8,7 +8,7 @@ namespace RGUH
 {
     public partial class EndGame : System.Web.UI.Page
     {
-        public const double PointsPerCent = 25;
+        public const double PointsPerCent = 4;
 
         public const double centToDollar = 1 / 100.0;
 
@@ -18,11 +18,11 @@ namespace RGUH
             {
                 GameStopwatch.Stop();
                 
-                int prizePoints = Common.GetTotalPrizePoints(Positions);
+                double avgPrizePoints = Common.GetAveragePrizePoints(ScenarioTurns);
 
-                TotalPrizePointsLbl.Text = prizePoints.ToString("");
+                AveragePrizePointsLbl.Text = avgPrizePoints.ToString("");
 
-                BonusLbl.Text = Math.Round(prizePoints / PointsPerCent, 0) + " cents";
+                BonusLbl.Text = Math.Round(avgPrizePoints / PointsPerCent, 0) + " cents";
 
                 dbHandler.UpdateTimesTable(GameState.EndGame);
             }
@@ -30,7 +30,7 @@ namespace RGUH
 
         private double GetBonus()
         {
-            var dollars = Common.GetTotalPrizePoints(Positions) / PointsPerCent;
+            var dollars = Common.GetAveragePrizePoints(ScenarioTurns) / PointsPerCent;
             var cents = dollars / 100;
             return Math.Round(cents, 2);
         }
@@ -68,19 +68,10 @@ namespace RGUH
 
             switch (AskPosition)
             {
-                case AskPositionHeuristic.First:
-                    nextAskPosition = AskPositionHeuristic.Optimal.ToString();
+                case AskPositionHeuristic.MEQO:
+                    nextAskPosition = AskPositionHeuristic.ESB.ToString();
                     break;
-                case AskPositionHeuristic.Optimal:
-                    nextAskPosition = AskPositionHeuristic.MonteCarlo.ToString();
-                    break;
-                case AskPositionHeuristic.MonteCarlo:
-                    nextAskPosition = AskPositionHeuristic.Last.ToString();
-                    break;
-                case AskPositionHeuristic.Last:
-                    nextAskPosition = AskPositionHeuristic.Random.ToString();
-                    break;
-                case AskPositionHeuristic.Random:
+                case AskPositionHeuristic.ESB:
                     nextAskPosition = "Done";
                     break;
             }
@@ -99,15 +90,15 @@ namespace RGUH
             {
                 using (SQLiteConnection sqlConnection1 = new SQLiteConnection(connectionString))
                 {
-                    using (SQLiteCommand cmd = new SQLiteCommand("INSERT INTO UserFeedback (UserId, Feedback, TotalTime, TotalPrizePoints, Bonus) " + 
-                        "VALUES (@UserId, @Feedback, @TotalTime, @TotalPrizePoints, @Bonus)"))
+                    using (SQLiteCommand cmd = new SQLiteCommand("INSERT INTO UserFeedback (UserId, Feedback, TotalTime, AveragePrizePoints, Bonus) " + 
+                        "VALUES (@UserId, @Feedback, @TotalTime, @AveragePrizePoints, @Bonus)"))
                     {
                         cmd.CommandType = CommandType.Text;
                         cmd.Connection = sqlConnection1;
                         cmd.Parameters.AddWithValue("@UserId", UserId);
                         cmd.Parameters.AddWithValue("@Feedback", feedback);
                         cmd.Parameters.AddWithValue("@TotalTime", Math.Round(GameStopwatch.Elapsed.TotalMinutes, 1));
-                        cmd.Parameters.AddWithValue("@TotalPrizePoints", Common.GetTotalPrizePoints(Positions));
+                        cmd.Parameters.AddWithValue("@AveragePrizePoints", Common.GetAveragePrizePoints(ScenarioTurns));
                         cmd.Parameters.AddWithValue("@Bonus", bonusDollars);
                         sqlConnection1.Open();
                         cmd.ExecuteNonQuery();
@@ -128,9 +119,9 @@ namespace RGUH
                 dbHandler.Dispose();
             }
             
-            if (Positions != null)
+            if (ScenarioTurns != null)
             {
-                Positions = null;
+                ScenarioTurns = null;
             }
 
             if (PositionCandidates != null)

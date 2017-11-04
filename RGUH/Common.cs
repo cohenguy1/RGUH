@@ -7,19 +7,21 @@ namespace RGUH
 {
     public static class Common
     {
-        public const int NumOfPositions = 10;
+        public const int NumOfTurns = 20;
 
         public const int NumOfCandidates = 10;
 
+        public const int NumOfTurnsInTable = 10;
+
         public const string MovingToNextString = "Moving on to fill the next position:<br /><br />";
 
-        public static int GetTotalPrizePoints(IEnumerable<Position> positions)
+        public static double GetAveragePrizePoints(IEnumerable<ScenarioTurn> turns)
         {
-            int totalPrizePoints = positions.Where(position => position.ChosenCandidate != null).
-                Sum(pos => 110 - pos.ChosenCandidate.CandidateRank * 10);
+            double averagePrizePoints = turns.Where(turn => turn.Played).
+                Average(tur => 110 - tur.ChosenCandidate.CandidateRank * 10);
 
             // with one decimal precision
-            return totalPrizePoints;
+            return averagePrizePoints;
         }
     }
 }

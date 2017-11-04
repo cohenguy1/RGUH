@@ -20,55 +20,21 @@ namespace RGUH
             {
                 Random ran = new Random();
                 int randomAsk = ran.Next(5);
-                VectorNum = ran.Next(50) + 1;
-                
-                switch (randomAsk)
-                {
-                    case 0:
-                        return AskPositionHeuristic.First;
-                    case 1:
-                        return AskPositionHeuristic.Last;
-                    case 2:
-                        RandomHuristicAskPosition = GetRandomAskPosition();
-                        return AskPositionHeuristic.Random;
-                    case 3:
-                        return AskPositionHeuristic.Optimal;
-                    case 4:
-                        return AskPositionHeuristic.MonteCarlo;
-                    default:
-                        return AskPositionHeuristic.First;
-                }
+                VectorNum = 49;
+
+                return AskPositionHeuristic.ESB;
             }
 
-            VectorNum = GetFirstVectorSatisfying(AskPositionHeuristic.First);
+            VectorNum = GetFirstVectorSatisfying(AskPositionHeuristic.MEQO);
             if (VectorNum != null)
             {
-                return AskPositionHeuristic.First;
+                return AskPositionHeuristic.MEQO;
             }
 
-            VectorNum = GetFirstVectorSatisfying(AskPositionHeuristic.Optimal);
+            VectorNum = GetFirstVectorSatisfying(AskPositionHeuristic.ESB);
             if (VectorNum != null)
             {
-                return AskPositionHeuristic.Optimal;
-            }
-
-            VectorNum = GetFirstVectorSatisfying(AskPositionHeuristic.MonteCarlo);
-            if (VectorNum != null)
-            {
-                return AskPositionHeuristic.MonteCarlo;
-            }
-
-            VectorNum = GetFirstVectorSatisfying(AskPositionHeuristic.Last);
-            if (VectorNum != null)
-            {
-                return AskPositionHeuristic.Last;
-            }
-
-            VectorNum = GetFirstVectorSatisfying(AskPositionHeuristic.Random);
-            if (VectorNum != null)
-            {
-                RandomHuristicAskPosition = GetRandomAskPosition();
-                return AskPositionHeuristic.Random;
+                return AskPositionHeuristic.ESB;
             }
 
             throw new Exception("No Hit Slots available");
@@ -77,7 +43,7 @@ namespace RGUH
         private int GetRandomAskPosition()
         {
             Random ran = new Random();
-            return ran.Next(Common.NumOfPositions) + 1;
+            return ran.Next(Common.NumOfTurns) + 1;
         }
 
         public void SetVectorAssignmentNull()

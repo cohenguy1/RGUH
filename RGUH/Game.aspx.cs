@@ -25,7 +25,7 @@ namespace RGUH
 
                 ShowInterviewImages();
 
-                CurrentPositionNumber = 1;
+                CurrentTurnNumber = 1;
 
                 StartInterviewsForPosition(1);
             }
@@ -44,25 +44,26 @@ namespace RGUH
 
             StatusLabel.Text = "";
 
-            SetTitle(positionIndex);
+            SetTitle();
 
             ClearInterviewImages();
 
             PositionCandidates = GenerateCandidatesForPosition(positionIndex);
 
-            CurrentPositionStatus = PositionStatus.Initial;
+            CurrentTurnStatus = TurnStatus.Initial;
 
             TimerGame.Enabled = true;
         }
 
 
-        private void SetTitle(int positionNumber)
+        private void SetTitle()
         {
-            string jobTitle = Position.GetJobTitle(positionNumber);        
+            var currentTurnNumber = CurrentTurnNumber;
+            string jobTitle = ScenarioTurn.GetTurnTitle(currentTurnNumber);        
 
             PositionHeader.Text = "Position: " + jobTitle;
 
-            if (positionNumber >= 1)
+            if (currentTurnNumber >= 1)
             {
                 MovingToNextPositionLabel.Text = Common.MovingToNextString;
                 MovingToNextPositionLabel.Visible = true;
@@ -70,13 +71,23 @@ namespace RGUH
                 MovingJobTitleLabel.Text = jobTitle + "<br /><br /><br />";
                 MovingJobTitleLabel.Visible = true;
 
-                if (positionNumber > 1)
+                if (currentTurnNumber > 1 && currentTurnNumber <= Common.NumOfTurnsInTable)
                 {
-                    SetSeenTableRowStyle(positionNumber - 1);
+                    SetSeenTableRowStyle(currentTurnNumber - 1);
                 }
             }
 
-            SetTableRowStyle(positionNumber);
+            // next turn
+            if (currentTurnNumber <= Common.NumOfTurnsInTable)
+            {
+                SetTableRowStyle(currentTurnNumber);
+            }
+            else if (currentTurnNumber <= Common.NumOfTurns)
+            {
+                ShiftCells();
+
+                UpdateNewRow(currentTurnNumber);
+            }
         }
 
         protected void TimerGame_Tick(object sender, EventArgs e)
@@ -87,17 +98,17 @@ namespace RGUH
                 return;
             }
 
-            if (CurrentPositionNumber > Common.NumOfPositions)
+            if (CurrentTurnNumber > Common.NumOfTurns)
             {
                 TimerGame.Enabled = false;
                 Response.Redirect("EndGame.aspx");
             }
-            else if (CurrentPositionStatus == PositionStatus.Initial)
+            else if (CurrentTurnStatus == TurnStatus.Initial)
             {
                 UpdateImages(CandidateState.Interview);
-                CurrentPositionStatus = PositionStatus.Interviewing;
+                CurrentTurnStatus = TurnStatus.Interviewing;
             }
-            else if (CurrentPositionStatus == PositionStatus.Interviewing)
+            else if (CurrentTurnStatus == TurnStatus.Interviewing)
             {
                 ProcessCandidate();
             }
@@ -105,7 +116,7 @@ namespace RGUH
 
         private void FillNextPosition()
         {
-            StartInterviewsForPosition(CurrentPositionNumber);
+            StartInterviewsForPosition(CurrentTurnNumber);
         }
 
         private void ProcessCandidate()
@@ -121,29 +132,31 @@ namespace RGUH
             }
 
             CurrentCandidate = hiredWorker;
+            GetCurrentTurn().SetPlayed();
+
             UpdatePositionToAcceptedCandidate(hiredWorker);
-            PositionSummary();
+            TurnSummary();
         }
 
-        private void PositionSummary()
+        private void TurnSummary()
         {
             TimerGame.Enabled = false;
-            CurrentPositionStatus = PositionStatus.Initial;
+            CurrentTurnStatus = TurnStatus.Initial;
             ImageInterview.Visible = false;
             LabelInterviewing.Visible = false;
             ImageHired.Visible = true;
-            PositionSummaryLbl1.Visible = true;
-            PositionSummaryLbl2.Visible = true;
-            PositionSummaryLbl3.Visible = true;
+            TurnSummaryLbl1.Visible = true;
+            TurnSummaryLbl2.Visible = true;
+            TurnSummaryLbl3.Visible = true;
             PrizePointsLbl1.Visible = true;
             PrizePointsLbl2.Visible = true;
             PrizePointsLbl3.Visible = true;
             SummaryNextLbl.Visible = true;
             btnNextToUniform.Visible = true;
 
-            PositionSummaryLbl2.Text = CurrentCandidate.CandidateRank.ToString();
+            TurnSummaryLbl2.Text = CurrentCandidate.CandidateRank.ToString();
             PrizePointsLbl2.Text = (110 - CurrentCandidate.CandidateRank * 10).ToString();
-            SummaryNextLbl.Text = "<br /><br />Press 'Next' to pick uniform for this " + Position.WaiterStr + ".<br />";
+            SummaryNextLbl.Text = "<br /><br />Press 'Next' to pick uniform for this " + ScenarioTurn.WaiterStr + ".<br />";
         }
 
         private void PickUniform()
@@ -157,25 +170,25 @@ namespace RGUH
             MultiView2.ActiveViewIndex = 2;
             ShowUniforms();
 
-            CurrentPositionStatus = PositionStatus.FillNextPosition;
+            CurrentTurnStatus = TurnStatus.FillNextPosition;
         }
 
         private void ShowUniforms()
         {
-            UniformPickForPosition.Text = " Pick the uniform for this " + Position.WaiterStr + ":";
+            UniformPickForPosition.Text = " Pick the uniform for this " + ScenarioTurn.WaiterStr + ":";
 
-            Uniform1.ImageUrl = "~/Images/" + Position.WaiterStr + ".Uniform1.jpg";
-            Uniform2.ImageUrl = "~/Images/" + Position.WaiterStr + ".Uniform2.jpg";
-            Uniform3.ImageUrl = "~/Images/" + Position.WaiterStr + ".Uniform3.jpg";
+            Uniform1.ImageUrl = "~/Images/" + ScenarioTurn.WaiterStr + ".Uniform1.jpg";
+            Uniform2.ImageUrl = "~/Images/" + ScenarioTurn.WaiterStr + ".Uniform2.jpg";
+            Uniform3.ImageUrl = "~/Images/" + ScenarioTurn.WaiterStr + ".Uniform3.jpg";
         }
 
         protected void btnPickUniform_Click(object sender, EventArgs e)
         {
             MultiView2.ActiveViewIndex = 0;
 
-            IncreaseCurrentPosition();
+            IncreaseCurrentTurn();
 
-            if (CurrentPositionNumber <= Common.NumOfPositions)
+            if (CurrentTurnNumber <= Common.NumOfTurns)
             {
                 FillNextPosition();
             }
@@ -194,22 +207,22 @@ namespace RGUH
 
         private void UpdatePositionToAcceptedCandidate(Candidate candidate)
         {
-            var currentPosition = GetCurrentPosition();
+            var currentTurn = GetCurrentTurn();
 
-            currentPosition.ChosenCandidate = candidate;
+            currentTurn.ChosenCandidate = candidate;
 
-            AcceptedCandidates[currentPosition.PositionNumber - 1] = currentPosition.ChosenCandidate.CandidateRank;
+            AcceptedCandidates[currentTurn.TurnNumber - 1] = currentTurn.ChosenCandidate.CandidateRank;
 
-            int totalPrizePoints = Common.GetTotalPrizePoints(Positions);
-            UpdatePositionsTable(currentPosition, totalPrizePoints);
+            double averagePrizePoints = Common.GetAveragePrizePoints(ScenarioTurns);
+            UpdateTurnsTable(currentTurn, averagePrizePoints);
         }
 
         protected void btnNextToUniform_Click(object sender, EventArgs e)
         {
             ImageHired.Visible = false;
-            PositionSummaryLbl1.Visible = false;
-            PositionSummaryLbl2.Visible = false;
-            PositionSummaryLbl3.Visible = false;
+            TurnSummaryLbl1.Visible = false;
+            TurnSummaryLbl2.Visible = false;
+            TurnSummaryLbl3.Visible = false;
             PrizePointsLbl1.Visible = false;
             PrizePointsLbl2.Visible = false;
             PrizePointsLbl3.Visible = false;
