@@ -22,7 +22,7 @@ namespace RGUH
                 int randomAsk = ran.Next(5);
                 VectorNum = 49;
 
-                return AskPositionHeuristic.ESB;
+                return AskPositionHeuristic.Random;
             }
 
             VectorNum = GetFirstVectorSatisfying(AskPositionHeuristic.MEQO);
@@ -35,6 +35,12 @@ namespace RGUH
             if (VectorNum != null)
             {
                 return AskPositionHeuristic.ESB;
+            }
+
+            VectorNum = GetFirstVectorSatisfying(AskPositionHeuristic.Random);
+            if (VectorNum != null)
+            {
+                return AskPositionHeuristic.Random;
             }
 
             throw new Exception("No Hit Slots available");

@@ -72,6 +72,9 @@ namespace RGUH
                     nextAskPosition = AskPositionHeuristic.ESB.ToString();
                     break;
                 case AskPositionHeuristic.ESB:
+                    nextAskPosition = AskPositionHeuristic.Random.ToString();
+                    break;
+                case AskPositionHeuristic.Random:
                     nextAskPosition = "Done";
                     break;
             }

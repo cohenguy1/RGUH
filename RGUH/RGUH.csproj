@@ -164,6 +164,7 @@
       <DependentUpon>BrowserProblem.aspx</DependentUpon>
     </Compile>
     <Compile Include="GameFlow\EsbUncertain.cs" />
+    <Compile Include="GameFlow\RandomUncertain.cs" />
     <Compile Include="GameFlow\MeqoUncertain.cs" />
     <Compile Include="GameFlow\TurnsHandler.cs">
       <SubType>ASPXCodeBehind</SubType>

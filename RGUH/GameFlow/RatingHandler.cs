@@ -47,6 +47,11 @@ namespace RGUH
                 return EsbUncertain.ShouldAsk(accepted, CurrentTurnNumber - 1);
             }
 
+            if (AskPosition == AskPositionHeuristic.Random)
+            {
+                return RandomUncertain.ShouldAsk();
+            }
+
             return false;
         }
 

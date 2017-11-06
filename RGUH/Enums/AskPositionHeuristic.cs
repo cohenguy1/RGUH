@@ -3,6 +3,7 @@
     public enum AskPositionHeuristic
     {
         MEQO,
-        ESB
+        ESB,
+        Random
     }
 }
