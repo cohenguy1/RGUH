@@ -19,7 +19,7 @@
                 <td>In this game you and your Human Resource (HR) executive are in charge of hiring waiters for the restaurant. The HR executive will be doing the interviewing and hiring and you will choose the uniform for each position.</td>
             </tr>
             <tr>
-                <td>The number of waiters you need to hire is 5 on average and 10 in worst case.</td>
+                <td>The number of waiters you need to hire is 10 on average and 20 in worst case.</td>
             </tr>
             <tr>
                 <td>&nbsp;</td>
