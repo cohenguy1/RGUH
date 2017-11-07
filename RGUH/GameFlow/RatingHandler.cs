@@ -23,6 +23,15 @@ namespace RGUH
                 return true;
             }
 
+            Random randSeed = new Random();
+            var rand = randSeed.Next(10);
+
+            // Checking Pt = 0.1
+            if (rand == 0)
+            {
+                return true;
+            }
+
             if (AskPosition == AskPositionHeuristic.MEQO)
             {
                 return MeqoUncertain.ShouldAsk(CurrentCandidate.CandidateRank);
@@ -49,7 +58,7 @@ namespace RGUH
 
             if (AskPosition == AskPositionHeuristic.Random)
             {
-                return RandomUncertain.ShouldAsk();
+                return RandomUncertain.ShouldAsk(randSeed);
             }
 
             return false;
